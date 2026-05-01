@@ -1,5 +1,5 @@
 {
-  "version": 10,
+  "version": 11,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 15:45",
-  "notes": "CLEAN: Diagnostic removed, karaoke rhymes restored with TTS guards (15 class-wise rhymes, lyrics highlight, MP3-ready)"
+  "lastUpdated": "2026-05-01 16:00",
+  "notes": "Topbar CSS compact for narrow phones (no wrap). Voice routes through native FlutterBridge when available (needs APK v2.3+ for sound)."
 }

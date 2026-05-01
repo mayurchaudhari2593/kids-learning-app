@@ -12,9 +12,16 @@ const STATE = {
 };
 
 // ---------- SPEECH ----------
-// Robust against WebViews that don't expose speechSynthesis or
-// SpeechSynthesisUtterance (older / minimal Android System WebView builds).
-const HAS_TTS = (typeof speechSynthesis !== 'undefined') && (typeof SpeechSynthesisUtterance !== 'undefined');
+// Three-tier fallback for voice playback:
+//   1. FlutterBridge (native TTS via Flutter's flutter_tts plugin) — works on
+//      every Android device, even those whose WebView lacks Web Speech API
+//   2. Web Speech API (browser-native speechSynthesis)
+//   3. No-op if both unavailable
+const HAS_BRIDGE = typeof FlutterBridge !== 'undefined' &&
+                   FlutterBridge &&
+                   typeof FlutterBridge.postMessage === 'function';
+const HAS_TTS = (typeof speechSynthesis !== 'undefined') &&
+                (typeof SpeechSynthesisUtterance !== 'undefined');
 let voices = [];
 function loadVoices() {
   if (!HAS_TTS) return;
@@ -24,22 +31,36 @@ loadVoices();
 if (HAS_TTS) {
   try { speechSynthesis.onvoiceschanged = loadVoices; } catch (e) {}
 }
+function _bridgePost(action, extra) {
+  try {
+    var payload = Object.assign({ action: action }, extra || {});
+    FlutterBridge.postMessage(JSON.stringify(payload));
+  } catch (e) {}
+}
 function speak(text, langOverride) {
-  if (!HAS_TTS || STATE.muted || !text) return;
+  if (STATE.muted || !text) return;
+  const lang = langOverride || (STATE.lang === 'hi' ? 'hi-IN' : 'en-US');
+  if (HAS_BRIDGE) {
+    _bridgePost('speak', { text: String(text), lang: lang });
+    return;
+  }
+  if (!HAS_TTS) return;
   try {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    const lang = langOverride || (STATE.lang === 'hi' ? 'hi-IN' : 'en-US');
     u.lang = lang; u.rate = 0.85; u.pitch = 1.2;
     const m = voices.find(v => v.lang === lang) || voices.find(v => v.lang && v.lang.startsWith(lang.split('-')[0]));
     if (m) u.voice = m;
     speechSynthesis.speak(u);
   } catch (e) {}
 }
-// Stub speechSynthesis so any other call site doesn't crash if API missing.
+// Stub speechSynthesis so any other call site (cancel/pause) doesn't crash
+// when the API is missing. Routes cancellation through the bridge if present.
 if (!HAS_TTS) {
   window.speechSynthesis = window.speechSynthesis || {
-    cancel(){}, pause(){}, resume(){}, speak(){}, getVoices(){ return []; },
+    cancel(){ if (HAS_BRIDGE) _bridgePost('cancel'); },
+    pause(){ if (HAS_BRIDGE) _bridgePost('pause'); },
+    resume(){}, speak(){}, getVoices(){ return []; },
     paused: false, speaking: false, pending: false
   };
 }
@@ -1484,38 +1505,47 @@ function openKaraoke(root, r) {
     a.play().catch(() => startTTS());
   }
   function startTTS() {
-    if (!HAS_TTS) {
-      status.textContent = T('Voice not available — read the words above','आवाज़ उपलब्ध नहीं — ऊपर शब्द पढ़ें');
-      // Highlight lines slowly with timer alone
-      let idx = 0;
-      function step() {
-        if (idx >= lines.length) { highlight(-1); status.textContent = T('Done! ⭐','हो गया! ⭐'); addStar(1); return; }
-        highlight(idx++); ttsTimer = setTimeout(step, 2000);
-      }
-      step();
-      return;
-    }
     usingTTS = true; audio = null;
-    status.textContent = T('🎤 Reading aloud…','🎤 पढ़ कर सुनाते हैं…');
+    if (HAS_BRIDGE || HAS_TTS) {
+      status.textContent = T('🎤 Reading aloud…','🎤 पढ़ कर सुनाते हैं…');
+    } else {
+      status.textContent = T('Voice not available — read along ↑','आवाज़ नहीं — ऊपर पढ़ें ↑');
+    }
     ttsIdx = 0;
     speakLine();
   }
   function speakLine() {
-    if (!HAS_TTS) return;
     if (ttsIdx >= lines.length) {
       highlight(-1); status.textContent = T('Great singing! ⭐','बहुत बढ़िया! ⭐'); addStar(2); return;
     }
     highlight(ttsIdx);
-    try {
-      const u = new SpeechSynthesisUtterance(lines[ttsIdx]);
-      u.rate = 0.85; u.pitch = 1.15;
-      u.lang = (STATE.lang === 'hi') ? 'hi-IN' : 'en-US';
-      const v = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(u.lang.toLowerCase().slice(0,2)));
-      if (v) u.voice = v;
-      u.onend   = () => { ttsIdx++; ttsTimer = setTimeout(speakLine, 220); };
-      u.onerror = () => { ttsIdx++; ttsTimer = setTimeout(speakLine, 220); };
-      speechSynthesis.speak(u);
-    } catch (e) { ttsIdx++; ttsTimer = setTimeout(speakLine, 220); }
+    const line = lines[ttsIdx];
+    const lang = (STATE.lang === 'hi') ? 'hi-IN' : 'en-US';
+
+    if (HAS_BRIDGE) {
+      // Native Flutter TTS — speak the line, wait based on word count then advance.
+      _bridgePost('speak', { text: line, lang: lang });
+      const words = line.split(/\s+/).length;
+      const delayMs = Math.max(1400, Math.min(5500, 350 * words + 600));
+      ttsIdx++;
+      ttsTimer = setTimeout(speakLine, delayMs);
+      return;
+    }
+    if (HAS_TTS) {
+      try {
+        const u = new SpeechSynthesisUtterance(line);
+        u.rate = 0.85; u.pitch = 1.15; u.lang = lang;
+        const v = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(lang.toLowerCase().slice(0,2)));
+        if (v) u.voice = v;
+        u.onend   = () => { ttsIdx++; ttsTimer = setTimeout(speakLine, 220); };
+        u.onerror = () => { ttsIdx++; ttsTimer = setTimeout(speakLine, 220); };
+        speechSynthesis.speak(u);
+      } catch (e) { ttsIdx++; ttsTimer = setTimeout(speakLine, 220); }
+      return;
+    }
+    // No voice anywhere — just animate highlights at a steady pace.
+    ttsIdx++;
+    ttsTimer = setTimeout(speakLine, 1800);
   }
   async function play() {
     stopAll();

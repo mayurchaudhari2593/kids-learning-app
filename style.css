@@ -54,39 +54,78 @@ body.theme-space .math-display { background: #1f2740; color: #80d8ff; }
 /* TOP BAR */
 #topbar {
   position: sticky; top: 0; z-index: 50;
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 14px;
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 10px;
   background: var(--topbar-grad);
   color: #fff;
   box-shadow: 0 4px 12px rgba(0,0,0,.15);
-}
-.topright { flex-wrap: wrap; }
-@media (max-width: 480px) {
-  .iconbtn { width: 34px; height: 34px; font-size: 15px; }
-  #topbar h1 { font-size: 16px; }
+  min-height: 52px;
 }
 #topbar h1 {
-  flex: 1; text-align: center;
-  font-size: clamp(18px, 4vw, 26px);
+  flex: 0 0 auto;
+  font-size: clamp(14px, 3.6vw, 22px);
   text-shadow: 2px 2px 0 rgba(0,0,0,.2);
+  white-space: nowrap;
+  margin: 0;
 }
-.topright { display: flex; align-items: center; gap: 6px; }
+.topright {
+  display: flex; align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.topright::-webkit-scrollbar { display: none; }
 #stars {
   background: rgba(255,255,255,.25);
-  padding: 6px 10px; border-radius: 20px;
-  font-weight: bold; font-size: 14px;
+  padding: 4px 8px; border-radius: 16px;
+  font-weight: bold; font-size: 13px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .iconbtn {
   background: rgba(255,255,255,.25);
   border: 2px solid rgba(255,255,255,.4);
   border-radius: 50%;
-  width: 40px; height: 40px;
-  font-size: 18px; cursor: pointer;
+  width: 36px; height: 36px;
+  font-size: 16px; cursor: pointer;
   color: #fff; font-weight: bold;
   transition: transform .15s;
+  flex-shrink: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .iconbtn:active { transform: scale(.9); }
 #backBtn { display: none; }
+
+/* Narrow phones — hide title text, keep only the star, shrink icons */
+@media (max-width: 480px) {
+  #topbar { padding: 6px 8px; gap: 4px; min-height: 48px; }
+  #topbar h1 {
+    font-size: 0;
+    width: 24px; height: 24px;
+    overflow: hidden;
+  }
+  #topbar h1::before {
+    content: '🌟';
+    font-size: 22px;
+    display: block;
+    line-height: 1;
+  }
+  .iconbtn { width: 32px; height: 32px; font-size: 14px; border-width: 1.5px; }
+  #stars { padding: 3px 7px; font-size: 12px; }
+  .class-badge { font-size: 11px !important; padding: 3px 7px !important; }
+  .topright { gap: 3px; }
+}
+@media (max-width: 360px) {
+  .iconbtn { width: 28px; height: 28px; font-size: 12px; }
+  #stars { padding: 2px 6px; font-size: 11px; }
+}
 
 /* SCREENS */
 .screen { display: none; padding: 16px; min-height: calc(100vh - 60px); }

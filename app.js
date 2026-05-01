@@ -862,7 +862,7 @@ function scope() {
     animals:   k === 'nursery' ? ANIMALS_BASIC : ANIMALS_FULL,
     fruits:    k === 'nursery' ? FRUITS_BASIC : FRUITS_FULL,
     body:      k === 'nursery' ? BODY_BASIC : BODY_FULL,
-    rhymes:    (RHYMES_BY_CLASS[k] || RHYMES_BY_CLASS.nursery).map(id => RHYMES_LIB[id]).filter(Boolean),
+    rhymes:    k === 'nursery' ? RHYMES_SIMPLE : RHYMES_FULL,
     mathOps:   k === 'kg1' ? ['+'] : ['+','-'],
     mathRange: k === 'kg1' ? 10 : 20
   };
@@ -1471,182 +1471,23 @@ BUILDERS.goodhabits = (root) => {
   root.appendChild(grid);
 };
 
-// RHYMES — class-wise karaoke player
-// Tap a thumbnail → fullscreen karaoke screen with line-by-line highlight.
-// Plays MP3 from `sounds/<name>.mp3` if available, otherwise falls back to TTS.
+// RHYMES (scoped) — REVERTED to old simple cards while debugging
 BUILDERS.rhymes = (root) => {
   root.innerHTML = '';
-  root.appendChild(header('Nursery Rhymes', 'बाल कविताएँ', 'Pick a rhyme to sing', 'गाने के लिए चुनें'));
-
-  const grid = el('div', { class: 'rhyme-thumb-grid' });
-  scope().rhymes.forEach((r) => {
-    const card = el('div', { class: 'rhyme-thumb' });
-    card.appendChild(el('div', { class: 'rhyme-thumb-emoji' }, r.emoji || '🎵'));
-    card.appendChild(el('div', { class: 'rhyme-thumb-title' }, T(r.title_en, r.title_hi)));
-    card.appendChild(el('div', { class: 'rhyme-thumb-play' }, '▶'));
-    card.onclick = () => openKaraoke(root, r);
-    grid.appendChild(card);
+  root.appendChild(header('Nursery Rhymes','बाल कविताएँ','Tap Play to listen','सुनें'));
+  scope().rhymes.forEach(([t_en, txt_en, t_hi, txt_hi]) => {
+    const t = T(t_en, t_hi), txt = T(txt_en, txt_hi);
+    const card = el('div', { class: 'rhyme-card' });
+    card.appendChild(el('h3', {}, '🎵 ' + t));
+    card.appendChild(el('pre', {}, txt));
+    const play = el('button', { class: 'btn green' }, '▶ ' + T('Play','सुनें'));
+    const stop = el('button', { class: 'btn' }, '⏸ ' + T('Stop','रोकें'));
+    play.onclick = () => speak(txt);
+    stop.onclick = () => speechSynthesis.cancel();
+    card.appendChild(el('div', { class: 'btn-row' }, [play, stop]));
+    root.appendChild(card);
   });
-  root.appendChild(grid);
 };
-
-// Karaoke fullscreen view (rendered inside the rhymes screen, swaps with grid)
-function openKaraoke(root, r) {
-  speechSynthesis.cancel();
-  const titleText = T(r.title_en, r.title_hi);
-  const lyricsText = T(r.text_en, r.text_hi);
-  const lines = lyricsText.split('\n').map(s => s.trim()).filter(Boolean);
-
-  root.innerHTML = '';
-
-  const back = el('button', { class: 'btn', style: 'margin:6px 0' }, '← ' + T('Back to rhymes', 'कविताओं की सूची'));
-  back.onclick = () => { stopAll(); BUILDERS.rhymes(root); };
-  root.appendChild(back);
-
-  const hero = el('div', { class: 'karaoke-hero' });
-  hero.appendChild(el('div', { class: 'karaoke-hero-emoji' }, r.emoji || '🎵'));
-  hero.appendChild(el('div', { class: 'karaoke-hero-title' }, titleText));
-  root.appendChild(hero);
-
-  const lyricsBox = el('div', { class: 'karaoke-lyrics' });
-  const lineEls = lines.map((line, i) => {
-    const lEl = el('div', { class: 'karaoke-line' }, line);
-    lyricsBox.appendChild(lEl);
-    return lEl;
-  });
-  root.appendChild(lyricsBox);
-
-  const status = el('div', { class: 'karaoke-status' }, T('Ready to play', 'सुनने के लिए तैयार'));
-  root.appendChild(status);
-
-  // Controls
-  const playBtn   = el('button', { class: 'btn green' }, '▶ ' + T('Play', 'गाओ'));
-  const pauseBtn  = el('button', { class: 'btn' }, '⏸ ' + T('Pause', 'रोको'));
-  const restartBtn= el('button', { class: 'btn orange' }, '⟲ ' + T('Restart', 'फिर से'));
-  const nextBtn   = el('button', { class: 'btn' }, T('Next ▶', 'अगला ▶'));
-  const ctrls = el('div', { class: 'karaoke-controls' }, [playBtn, pauseBtn, restartBtn, nextBtn]);
-  root.appendChild(ctrls);
-
-  // Player state
-  let audio = null;
-  let usingTTS = false;
-  let ttsIdx = 0;
-  let ttsTimer = null;
-
-  function highlight(idx) {
-    lineEls.forEach((e, i) => e.classList.toggle('active', i === idx));
-    if (idx >= 0 && lineEls[idx]) {
-      lineEls[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  }
-
-  function stopAll() {
-    if (audio) { try { audio.pause(); } catch(_){} audio = null; }
-    speechSynthesis.cancel();
-    if (ttsTimer) { clearTimeout(ttsTimer); ttsTimer = null; }
-    highlight(-1);
-  }
-
-  function tryAudio() {
-    return new Promise((resolve) => {
-      const a = new Audio(r.audio);
-      a.preload = 'auto';
-      let settled = false;
-      const ok = () => { if (settled) return; settled = true; resolve(a); };
-      const fail = () => { if (settled) return; settled = true; resolve(null); };
-      a.addEventListener('canplaythrough', ok, { once: true });
-      a.addEventListener('error', fail, { once: true });
-      // give it 4 seconds to load on first try; treat as missing otherwise
-      setTimeout(fail, 4000);
-    });
-  }
-
-  function startMP3(a) {
-    audio = a;
-    usingTTS = false;
-    status.textContent = T('🎵 Singing along…', '🎵 गाते हुए…');
-
-    // Distribute lines evenly across audio duration; highlight current line.
-    const total = isFinite(a.duration) && a.duration > 0 ? a.duration : (lines.length * 3);
-    const per = total / lines.length;
-
-    a.ontimeupdate = () => {
-      const idx = Math.min(lines.length - 1, Math.floor(a.currentTime / per));
-      highlight(idx);
-    };
-    a.onended = () => { highlight(-1); status.textContent = T('Great singing! ⭐', 'बहुत बढ़िया! ⭐'); addStar(2); };
-    a.play().catch(() => startTTS());
-  }
-
-  function startTTS() {
-    usingTTS = true;
-    audio = null;
-    status.textContent = T('🎤 Reading aloud…', '🎤 पढ़ कर सुनाते हैं…');
-    ttsIdx = 0;
-    speakLine();
-  }
-
-  function speakLine() {
-    if (ttsIdx >= lines.length) {
-      highlight(-1);
-      status.textContent = T('Great singing! ⭐', 'बहुत बढ़िया! ⭐');
-      addStar(2);
-      return;
-    }
-    highlight(ttsIdx);
-    const u = new SpeechSynthesisUtterance(lines[ttsIdx]);
-    u.rate = 0.85;
-    u.pitch = 1.15;
-    const vlang = (STATE && STATE.lang === 'hi') ? 'hi-IN' : 'en-US';
-    u.lang = vlang;
-    // Pick a matching voice if available
-    try {
-      const voices = speechSynthesis.getVoices();
-      const v = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(vlang.toLowerCase().slice(0,2)));
-      if (v) u.voice = v;
-    } catch(_) {}
-    u.onend = () => {
-      ttsIdx++;
-      ttsTimer = setTimeout(speakLine, 220); // tiny pause between lines
-    };
-    u.onerror = () => { ttsIdx++; ttsTimer = setTimeout(speakLine, 220); };
-    speechSynthesis.speak(u);
-  }
-
-  async function play() {
-    stopAll();
-    status.textContent = T('Loading…', 'लोड हो रहा है…');
-    const a = r.audio ? await tryAudio() : null;
-    if (a) startMP3(a); else startTTS();
-  }
-
-  function pause() {
-    if (audio) { audio.pause(); status.textContent = T('Paused', 'रुका हुआ'); }
-    else if (usingTTS) { speechSynthesis.pause(); status.textContent = T('Paused', 'रुका हुआ'); }
-  }
-
-  function resume() {
-    if (audio) { audio.play(); status.textContent = T('🎵 Singing along…', '🎵 गाते हुए…'); }
-    else if (usingTTS && speechSynthesis.paused) { speechSynthesis.resume(); status.textContent = T('🎤 Reading aloud…', '🎤 पढ़ कर सुनाते हैं…'); }
-    else play();
-  }
-
-  function nextRhyme() {
-    stopAll();
-    const list = scope().rhymes;
-    const idx = list.indexOf(r);
-    const nxt = list[(idx + 1) % list.length];
-    openKaraoke(root, nxt);
-  }
-
-  playBtn.onclick   = resume;
-  pauseBtn.onclick  = pause;
-  restartBtn.onclick= play;
-  nextBtn.onclick   = nextRhyme;
-
-  // Auto-start on open
-  setTimeout(play, 100);
-}
 
 BUILDERS.stories = (root) => {
   root.innerHTML = '';

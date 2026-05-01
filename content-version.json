@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 14:10",
-  "notes": "Visible JS error catcher added for debugging"
+  "lastUpdated": "2026-05-01 14:30",
+  "notes": "Revert karaoke BUILDERS to debug click-not-working issue (RHYMES_LIB kept as dead data)"
 }

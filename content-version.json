@@ -1,5 +1,5 @@
 {
-  "version": 6,
+  "version": 7,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 14:55",
-  "notes": "INLINE DIAGNOSTIC overlay added — taps counter, error log, JS state visible at top"
+  "lastUpdated": "2026-05-01 15:00",
+  "notes": "Removed RHYMES_LIB block — bisecting CLASS_INFO TDZ error"
 }

@@ -60,12 +60,12 @@
 
   function update(){
     var s = '';
-    s += 'time: '+ ((Date.now()-bootStart)/1000).toFixed(1) +'s\n';
-    s += 'taps: '+ tapCount +'  errors: '+ errCount +'\n';
+    s += 'time: '+ ((Date.now()-bootStart)/1000).toFixed(1) +'s  taps: '+ tapCount +'  errs: '+ errCount +'\n';
     s += 'app.js loaded: '+ (window.__APPJS_LOADED ? 'YES' : 'no') +'\n';
-    s += 'STATE.klass: '+ (window.STATE ? (window.STATE.klass||'(none)') : 'no STATE') +'\n';
-    s += 'BUILDERS: '+ (window.BUILDERS ? Object.keys(window.BUILDERS).length : 0) +' keys\n';
     s += 'cards in DOM: '+ document.querySelectorAll('.class-card').length +'\n';
+    var marks = window.__M || [];
+    s += 'last markers: ' + (marks.length ? marks.slice(-5).join(' → ') : '(none)') + '\n';
+    s += 'total markers: ' + marks.length + '\n';
     if (errLog.length) s += '\nERRORS:\n' + errLog.slice(-3).join('\n');
     info.textContent = s;
   }

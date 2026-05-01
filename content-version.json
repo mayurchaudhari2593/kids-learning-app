@@ -1,5 +1,5 @@
 {
-  "version": 7,
+  "version": 8,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 15:00",
-  "notes": "Removed RHYMES_LIB block — bisecting CLASS_INFO TDZ error"
+  "lastUpdated": "2026-05-01 15:15",
+  "notes": "Add execution markers to bisect exact death line in app.js"
 }

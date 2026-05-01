@@ -2,6 +2,9 @@
 /* Classes: nursery (3-4) | kg1 (4-5) | kg2 (5-6)         */
 window.__APPJS_LOADED = true;
 window.__APPJS_TIME = Date.now();
+window.__M = [];
+function _m(s) { try { window.__M.push(s); } catch(e){} }
+_m('start');
 
 // ---------- STATE ----------
 const STATE = {
@@ -12,6 +15,7 @@ const STATE = {
   chapter: null,                                  // current chapter id
   current: 'classSelect'
 };
+_m('STATE');
 
 // ---------- SPEECH ----------
 let voices = [];
@@ -97,6 +101,7 @@ const ALPHABET = [
   ['V','Van','वैन','🚐'],['W','Watch','घड़ी','⌚'],['X','Xylophone','ज़ाइलोफ़ोन','🎶'],
   ['Y','Yak','याक','🐂'],['Z','Zebra','ज़ेबरा','🦓']
 ];
+_m('ALPHABET');
 
 // Phonics sounds - English letter sounds for KG2
 const PHONICS = {
@@ -112,6 +117,7 @@ const HINDI_SWAR = [
   ['ऋ','ऋषि','Sage','🧙'],['ए','एड़ी','Heel','🦶'],['ऐ','ऐनक','Glasses','👓'],
   ['ओ','ओखली','Mortar','🪔'],['औ','औरत','Woman','👩'],['अं','अंगूर','Grapes','🍇']
 ];
+_m('HINDI_SWAR');
 
 const HINDI_VYANJAN = [
   ['क','कमल','Lotus','🪷'],['ख','खरगोश','Rabbit','🐇'],['ग','गमला','Pot','🪴'],
@@ -148,6 +154,7 @@ const COLORS_BASIC = [
   ['Red','लाल','#e53935'],['Blue','नीला','#1e88e5'],['Green','हरा','#43a047'],
   ['Yellow','पीला','#fdd835'],['Black','काला','#212121'],['White','सफ़ेद','#fafafa']
 ];
+_m('COLORS');
 const COLORS_FULL = [
   ['Red','लाल','#e53935'],['Blue','नीला','#1e88e5'],['Green','हरा','#43a047'],
   ['Yellow','पीला','#fdd835'],['Orange','नारंगी','#fb8c00'],['Purple','बैंगनी','#8e24aa'],
@@ -161,6 +168,7 @@ const SHAPES_BASIC = [
   ['Triangle','त्रिकोण','<svg viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill="#66bb6a"/></svg>'],
   ['Star','तारा','<svg viewBox="0 0 100 100"><polygon points="50,5 61,38 95,38 67,58 78,92 50,72 22,92 33,58 5,38 39,38" fill="#fdd835"/></svg>']
 ];
+_m('SHAPES');
 const SHAPES_FULL = SHAPES_BASIC.concat([
   ['Rectangle','आयत','<svg viewBox="0 0 100 100"><rect x="5" y="25" width="90" height="50" fill="#ffa726"/></svg>'],
   ['Heart','दिल','<svg viewBox="0 0 100 100"><path d="M50 88 L15 50 a20 20 0 0 1 35 -15 a20 20 0 0 1 35 15 z" fill="#ef5350"/></svg>'],
@@ -174,6 +182,7 @@ const ANIMALS_BASIC = [
   ['🐶','Dog','कुत्ता'],['🐱','Cat','बिल्ली'],['🐮','Cow','गाय'],['🐵','Monkey','बंदर'],
   ['🦁','Lion','शेर'],['🐘','Elephant','हाथी'],['🐰','Rabbit','खरगोश'],['🐴','Horse','घोड़ा']
 ];
+_m('ANIMALS');
 const ANIMALS_FULL = ANIMALS_BASIC.concat([
   ['🐷','Pig','सूअर'],['🐯','Tiger','बाघ'],['🦒','Giraffe','जिराफ़'],['🦓','Zebra','ज़ेबरा'],
   ['🐑','Sheep','भेड़'],['🐐','Goat','बकरी'],['🐻','Bear','भालू'],['🦊','Fox','लोमड़ी'],
@@ -191,6 +200,7 @@ const FRUITS_BASIC = [
   ['🍎','Apple','सेब'],['🍌','Banana','केला'],['🍇','Grapes','अंगूर'],['🍊','Orange','संतरा'],
   ['🥭','Mango','आम'],['🍉','Watermelon','तरबूज़'],['🍓','Strawberry','स्ट्रॉबेरी'],['🍒','Cherry','चेरी']
 ];
+_m('FRUITS');
 const FRUITS_FULL = FRUITS_BASIC.concat([
   ['🍍','Pineapple','अनानास'],['🍑','Peach','आड़ू'],['🥥','Coconut','नारियल'],['🍐','Pear','नाशपाती'],
   ['🥝','Kiwi','कीवी'],['🫐','Blueberry','ब्लूबेरी'],['🍋','Lemon','नींबू'],['🍈','Melon','खरबूज़ा']
@@ -207,6 +217,7 @@ const BODY_BASIC = [
   ['👁️','Eye','आँख'],['👂','Ear','कान'],['👃','Nose','नाक'],['👄','Mouth','मुँह'],
   ['🖐️','Hand','हाथ'],['🦵','Leg','पैर']
 ];
+_m('BODY');
 const BODY_FULL = BODY_BASIC.concat([
   ['🦷','Tooth','दाँत'],['👅','Tongue','जीभ'],['🧠','Brain','दिमाग़'],['❤️','Heart','दिल'],
   ['💪','Arm','बाज़ू'],['🦶','Foot','तलवा'],['👆','Finger','उंगली'],['💇','Hair','बाल']
@@ -287,6 +298,7 @@ Bahar nikalo to mar jaaye.`,
 हाथ लगाओ तो डर जाए,
 बाहर निकालो तो मर जाए।`]
 ];
+_m('RHYMES_SIMPLE');
 const RHYMES_FULL = RHYMES_SIMPLE.concat([
   ['Old MacDonald',
 `Old MacDonald had a farm, E-I-E-I-O,
@@ -319,6 +331,7 @@ Munne ko de pyaale mein.`,
 आप खाएँ थाली में,
 मुन्ने को दें प्याली में।`]
 ]);
+_m('RHYMES_FULL');
 
 // (RHYMES_LIB and RHYMES_BY_CLASS deleted for diagnostic)
 
@@ -349,6 +362,7 @@ Lesson: Slow and steady wins the race.`,
 
 सीख: धीमा पर लगातार चलने वाला जीतता है।`]
 ];
+_m('STORIES');
 
 // ---------- CLASS-WISE MENU CONFIG ----------
 const CLASS_INFO = {
@@ -356,6 +370,7 @@ const CLASS_INFO = {
   kg1:     { en: 'KG 1',    hi: 'के.जी. १', emoji: '🎨', color: '#42a5f5' },
   kg2:     { en: 'KG 2',    hi: 'के.जी. २', emoji: '🎓', color: '#66bb6a' }
 };
+_m('CLASS_INFO');
 
 const CLASS_MENU = {
   nursery: [
@@ -552,6 +567,7 @@ const CLASS_MENU = {
     { s:'rewards',       en:'Rewards',       hi:'पुरस्कार',     ico:'🏆', c:'#fdd835' }
   ]
 };
+_m('CLASS_MENU');
 
 // ---------- CHAPTERS (groups of subjects) ----------
 // Each chapter lists subject keys (matching CLASS_MENU items by `s`).
@@ -894,6 +910,7 @@ setTimeout(checkScreenTimeLimit, 2000);
 
 // ============== BUILDERS ==============
 const BUILDERS = {};
+_m('BUILDERS');
 
 // ALPHABET BASIC (Nursery — letters only, big & colorful)
 BUILDERS.alphabetBasic = (root) => {
@@ -4545,6 +4562,7 @@ const TR_MAP = {
   'Profile':                 { mr:'प्रोफाइल', ta:'சுயவிவரம்', bn:'প্রোফাইল', gu:'પ્રોફાઇલ', pa:'ਪ੍ਰੋਫਾਈਲ' },
   'Settings':                { mr:'सेटिंग', ta:'அமைப்புகள்', bn:'সেটিংস', gu:'સેટિંગ્સ', pa:'ਸੈਟਿੰਗਾਂ' }
 };
+_m('TR_MAP');
 function TL(en) {
   if (STATE.lang === 'en') return en;
   const m = TR_MAP[en];

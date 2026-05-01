@@ -1,5 +1,5 @@
 {
-  "version": 8,
+  "version": 9,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 15:15",
-  "notes": "Add execution markers to bisect exact death line in app.js"
+  "lastUpdated": "2026-05-01 15:30",
+  "notes": "FIX: Guard speechSynthesis.getVoices() against missing API in older Android WebView. This was breaking all init."
 }

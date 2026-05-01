@@ -18,23 +18,36 @@ const STATE = {
 _m('STATE');
 
 // ---------- SPEECH ----------
+// Robust against WebViews that don't expose speechSynthesis or
+// SpeechSynthesisUtterance (older / minimal Android System WebView builds).
+const HAS_TTS = (typeof speechSynthesis !== 'undefined') && (typeof SpeechSynthesisUtterance !== 'undefined');
 let voices = [];
-function loadVoices() { voices = speechSynthesis.getVoices(); }
+function loadVoices() {
+  if (!HAS_TTS) return;
+  try { voices = speechSynthesis.getVoices() || []; } catch (e) { voices = []; }
+}
 loadVoices();
-if (typeof speechSynthesis !== 'undefined') {
-  speechSynthesis.onvoiceschanged = loadVoices;
+if (HAS_TTS) {
+  try { speechSynthesis.onvoiceschanged = loadVoices; } catch (e) {}
 }
 function speak(text, langOverride) {
-  if (STATE.muted || !text) return;
+  if (!HAS_TTS || STATE.muted || !text) return;
   try {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     const lang = langOverride || (STATE.lang === 'hi' ? 'hi-IN' : 'en-US');
     u.lang = lang; u.rate = 0.85; u.pitch = 1.2;
-    const m = voices.find(v => v.lang === lang) || voices.find(v => v.lang.startsWith(lang.split('-')[0]));
+    const m = voices.find(v => v.lang === lang) || voices.find(v => v.lang && v.lang.startsWith(lang.split('-')[0]));
     if (m) u.voice = m;
     speechSynthesis.speak(u);
   } catch (e) {}
+}
+// Stub speechSynthesis so any other call site doesn't crash if API missing.
+if (!HAS_TTS) {
+  window.speechSynthesis = window.speechSynthesis || {
+    cancel(){}, pause(){}, resume(){}, speak(){}, getVoices(){ return []; },
+    paused: false, speaking: false, pending: false
+  };
 }
 
 // ---------- TOAST ----------

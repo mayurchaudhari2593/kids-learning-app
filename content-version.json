@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 13:50",
-  "notes": "Class-wise karaoke rhymes — 15 rhymes (Nursery 6, KG1 5, KG2 4) with lyrics highlight, MP3-ready"
+  "lastUpdated": "2026-05-01 14:10",
+  "notes": "Visible JS error catcher added for debugging"
 }

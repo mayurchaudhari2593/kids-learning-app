@@ -1,6 +1,22 @@
 /* ============== KIDS LEARNING APP - LOGIC ============== */
 /* Classes: nursery (3-4) | kg1 (4-5) | kg2 (5-6)         */
 
+// ---------- VISIBLE ERROR CATCHER (debug aid) ----------
+// Shows any runtime JS error as a red banner so we can SEE what broke.
+window.addEventListener('error', function(e) {
+  try {
+    var d = document.createElement('div');
+    d.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#d32f2f;color:#fff;padding:10px;z-index:999999;font:12px monospace;white-space:pre-wrap;max-height:50vh;overflow:auto;border-bottom:3px solid #fff';
+    d.textContent = '⚠️ JS ERROR\n' + (e.message || e) + '\n' + (e.filename || '') + ':' + (e.lineno || '') + ':' + (e.colno || '');
+    var c = document.createElement('button');
+    c.textContent = '×';
+    c.style.cssText = 'position:absolute;top:4px;right:6px;background:#fff;color:#d32f2f;border:0;width:24px;height:24px;border-radius:50%;font-weight:bold';
+    c.onclick = function(){ d.remove(); };
+    d.appendChild(c);
+    (document.body || document.documentElement).appendChild(d);
+  } catch(_){}
+});
+
 // ---------- STATE ----------
 const STATE = {
   lang: localStorage.getItem('lang') || 'en',

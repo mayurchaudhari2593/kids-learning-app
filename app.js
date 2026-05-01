@@ -318,6 +318,258 @@ Munne ko de pyaale mein.`,
 मुन्ने को दें प्याली में।`]
 ]);
 
+// =================================================================
+// RHYMES LIBRARY — class-wise karaoke rhymes
+// MP3s host kiye hue hain GitHub Pages /sounds/ folder me.
+// MP3 missing ho to automatically TTS fall back ho jata hai.
+// =================================================================
+const RHYMES_LIB = {
+  twinkle: {
+    emoji: '⭐',
+    title_en: 'Twinkle Twinkle Little Star',
+    title_hi: 'टिमटिम तारा',
+    audio: 'sounds/twinkle.mp3',
+    text_en: `Twinkle, twinkle, little star,
+How I wonder what you are!
+Up above the world so high,
+Like a diamond in the sky.
+Twinkle, twinkle, little star,
+How I wonder what you are!`,
+    text_hi: `टिमटिम टिमटिम छोटा तारा,
+तू कितना सुंदर प्यारा।
+ऊपर ऊँचे आसमान में,
+हीरे जैसा चमक रहा।
+टिमटिम टिमटिम छोटा तारा,
+तू कितना सुंदर प्यारा।`
+  },
+  abc: {
+    emoji: '🔤',
+    title_en: 'ABC Song',
+    title_hi: 'ABC गीत',
+    audio: 'sounds/abc.mp3',
+    text_en: `A B C D E F G,
+H I J K L M N O P,
+Q R S, T U V,
+W X Y and Z.
+Now I know my ABCs,
+Next time won't you sing with me!`,
+    text_hi: `A B C D E F G,
+H I J K L M N O P,
+Q R S, T U V,
+W X Y और Z.
+अब मुझे ABC आ गई,
+अगली बार साथ गाओ!`
+  },
+  baabaa: {
+    emoji: '🐑',
+    title_en: 'Baa Baa Black Sheep',
+    title_hi: 'काली भेड़',
+    audio: 'sounds/baabaa.mp3',
+    text_en: `Baa baa black sheep, have you any wool?
+Yes sir, yes sir, three bags full!
+One for my master, one for my dame,
+One for the little boy who lives down the lane.`,
+    text_hi: `बाँ बाँ काली भेड़, ऊन है तेरे पास?
+हाँ जी, हाँ जी, तीन थैले भर के।
+एक मालिक के लिए, एक मालकिन के लिए,
+एक उस छोटे बच्चे के लिए जो गली में रहता है।`
+  },
+  itsybitsy: {
+    emoji: '🕷️',
+    title_en: 'Itsy Bitsy Spider',
+    title_hi: 'छोटी मकड़ी',
+    audio: 'sounds/itsybitsy.mp3',
+    text_en: `The itsy bitsy spider climbed up the water spout,
+Down came the rain and washed the spider out,
+Out came the sun and dried up all the rain,
+And the itsy bitsy spider climbed up the spout again.`,
+    text_hi: `छोटी सी मकड़ी पाइप पर चढ़ी,
+बारिश आई मकड़ी को बहा ले गई।
+सूरज आया बारिश सुखा दी,
+और मकड़ी फिर से पाइप पर चढ़ गई।`
+  },
+  machhli: {
+    emoji: '🐟',
+    title_en: 'Machhli Jal Ki Rani',
+    title_hi: 'मछली जल की रानी',
+    audio: 'sounds/machhli.mp3',
+    text_en: `Machhli jal ki rani hai,
+Jeevan uska paani hai,
+Haath lagao to dar jaaye,
+Bahar nikalo to mar jaaye.`,
+    text_hi: `मछली जल की रानी है,
+जीवन उसका पानी है।
+हाथ लगाओ तो डर जाए,
+बाहर निकालो तो मर जाए।`
+  },
+  chanda: {
+    emoji: '🌙',
+    title_en: 'Chanda Mama Door Ke',
+    title_hi: 'चंदा मामा',
+    audio: 'sounds/chanda.mp3',
+    text_en: `Chanda mama door ke,
+Pue pakaaye boor ke,
+Aap khaaye thali mein,
+Munne ko de pyaale mein.`,
+    text_hi: `चंदा मामा दूर के,
+पुए पकाए बूर के।
+आप खाएँ थाली में,
+मुन्ने को दें प्याली में।`
+  },
+  wheels: {
+    emoji: '🚌',
+    title_en: 'Wheels on the Bus',
+    title_hi: 'बस के पहिए',
+    audio: 'sounds/wheels.mp3',
+    text_en: `The wheels on the bus go round and round,
+Round and round, round and round,
+The wheels on the bus go round and round,
+All through the town.
+The wipers on the bus go swish swish swish,
+The horn on the bus goes beep beep beep,
+The babies on the bus go waa waa waa,
+All through the town.`,
+    text_hi: `बस के पहिए घूमे गोल गोल,
+गोल गोल, गोल गोल,
+बस के पहिए घूमे गोल गोल,
+सारे शहर में।
+वाइपर चले स्विश स्विश स्विश,
+हॉर्न बजे बीप बीप बीप,
+बच्चे रोएँ वाँ वाँ वाँ,
+सारे शहर में।`
+  },
+  oldmac: {
+    emoji: '🐄',
+    title_en: 'Old MacDonald Had a Farm',
+    title_hi: 'मैक डोनाल्ड का खेत',
+    audio: 'sounds/oldmac.mp3',
+    text_en: `Old MacDonald had a farm, E-I-E-I-O,
+And on his farm he had a cow, E-I-E-I-O,
+With a moo-moo here, and a moo-moo there,
+Here a moo, there a moo, everywhere a moo-moo!
+Old MacDonald had a farm, E-I-E-I-O.`,
+    text_hi: `मैक डोनाल्ड का खेत था, ई-आई-ई-आई-ओ,
+उस खेत में एक गाय थी, ई-आई-ई-आई-ओ।
+मूँ-मूँ इधर, मूँ-मूँ उधर,
+हर तरफ़ बस मूँ-मूँ-मूँ!
+मैक डोनाल्ड का खेत था, ई-आई-ई-आई-ओ।`
+  },
+  head: {
+    emoji: '👶',
+    title_en: 'Head, Shoulders, Knees and Toes',
+    title_hi: 'सिर, कंधे, घुटने, पैर',
+    audio: 'sounds/head.mp3',
+    text_en: `Head, shoulders, knees and toes,
+Knees and toes, knees and toes,
+Head, shoulders, knees and toes,
+Eyes and ears and mouth and nose.
+Head, shoulders, knees and toes!`,
+    text_hi: `सिर, कंधे, घुटने और पैर,
+घुटने और पैर, घुटने और पैर,
+सिर, कंधे, घुटने और पैर,
+आँख कान मुँह और नाक।
+सिर, कंधे, घुटने और पैर!`
+  },
+  hathi: {
+    emoji: '🐘',
+    title_en: 'Hathi Raja Kahan Chale',
+    title_hi: 'हाथी राजा कहाँ चले',
+    audio: 'sounds/hathi.mp3',
+    text_en: `Hathi Raja kahan chale?
+Idhar udhar mat dekho,
+Sundh hilaate badhte chalo,
+Jangal mein le chalo.`,
+    text_hi: `हाथी राजा कहाँ चले?
+इधर उधर मत देखो।
+सूँड़ हिलाते बढ़ते चलो,
+जंगल में ले चलो।`
+  },
+  aloo: {
+    emoji: '🥔',
+    title_en: 'Aloo Kachaloo Beta',
+    title_hi: 'आलू कचालू बेटा',
+    audio: 'sounds/aloo.mp3',
+    text_en: `Aloo Kachaloo Beta kahan gaye thay?
+Bandi bagiya mein so rahe thay.
+Bandi bagiya mein chor aaya,
+Aloo Kachaloo darr ke bhaaga.`,
+    text_hi: `आलू कचालू बेटा कहाँ गए थे?
+बंदी बगिया में सो रहे थे।
+बंदी बगिया में चोर आया,
+आलू कचालू डर के भागा।`
+  },
+  johny: {
+    emoji: '👦',
+    title_en: 'Johny Johny Yes Papa',
+    title_hi: 'जॉनी जॉनी',
+    audio: 'sounds/johny.mp3',
+    text_en: `Johny Johny, Yes Papa,
+Eating sugar? No Papa,
+Telling lies? No Papa,
+Open your mouth, Ha Ha Ha!`,
+    text_hi: `जॉनी जॉनी, हाँ पापा,
+चीनी खाई? ना पापा,
+झूठ बोला? ना पापा,
+मुँह खोलो, हा हा हा!`
+  },
+  mary: {
+    emoji: '🐑',
+    title_en: 'Mary Had a Little Lamb',
+    title_hi: 'मेरी का मेमना',
+    audio: 'sounds/mary.mp3',
+    text_en: `Mary had a little lamb,
+Little lamb, little lamb,
+Mary had a little lamb,
+Its fleece was white as snow.
+And everywhere that Mary went,
+Mary went, Mary went,
+Everywhere that Mary went,
+The lamb was sure to go.`,
+    text_hi: `मेरी के पास एक मेमना था,
+छोटा मेमना, छोटा मेमना,
+मेरी के पास एक मेमना था,
+उसकी ऊन बर्फ़ जैसी सफ़ेद।
+मेरी जहाँ भी जाती थी,
+जहाँ भी जाती थी,
+मेरी जहाँ भी जाती थी,
+मेमना ज़रूर साथ जाता था।`
+  },
+  happy: {
+    emoji: '😊',
+    title_en: "If You're Happy and You Know It",
+    title_hi: 'खुश हो तो ताली बजाओ',
+    audio: 'sounds/happy.mp3',
+    text_en: `If you're happy and you know it, clap your hands,
+If you're happy and you know it, clap your hands,
+If you're happy and you know it, then your face will surely show it,
+If you're happy and you know it, clap your hands.`,
+    text_hi: `खुश हो तो ताली बजाओ,
+खुश हो तो ताली बजाओ,
+खुश हो तो दिखाओ चेहरे पे ख़ुशी,
+खुश हो तो ताली बजाओ।`
+  },
+  lakdi: {
+    emoji: '🐎',
+    title_en: 'Lakdi Ki Kathi',
+    title_hi: 'लकड़ी की काठी',
+    audio: 'sounds/lakdi.mp3',
+    text_en: `Lakdi ki kaathi, kaathi pe ghoda,
+Ghoda hai chanchal taang udaata,
+Bachpan ki yaadein, ek kahaani,
+Lakdi ki kaathi, kaathi pe ghoda.`,
+    text_hi: `लकड़ी की काठी, काठी पे घोड़ा,
+घोड़ा है चंचल टांग उड़ाता।
+बचपन की यादें, एक कहानी,
+लकड़ी की काठी, काठी पे घोड़ा।`
+  }
+};
+
+const RHYMES_BY_CLASS = {
+  nursery: ['twinkle', 'abc', 'baabaa', 'itsybitsy', 'machhli', 'chanda'],
+  kg1:     ['wheels', 'oldmac', 'head', 'hathi', 'aloo', 'twinkle', 'abc'],
+  kg2:     ['johny', 'mary', 'happy', 'lakdi', 'wheels', 'oldmac', 'head']
+};
+
 const STORIES = [
   ['The Thirsty Crow',
 `Once a thirsty crow could not find water. He saw a pot with little water at the bottom. The crow dropped pebbles one by one. The water rose up. The clever crow drank water and flew away happily.
@@ -594,7 +846,7 @@ function scope() {
     animals:   k === 'nursery' ? ANIMALS_BASIC : ANIMALS_FULL,
     fruits:    k === 'nursery' ? FRUITS_BASIC : FRUITS_FULL,
     body:      k === 'nursery' ? BODY_BASIC : BODY_FULL,
-    rhymes:    k === 'nursery' ? RHYMES_SIMPLE : RHYMES_FULL,
+    rhymes:    (RHYMES_BY_CLASS[k] || RHYMES_BY_CLASS.nursery).map(id => RHYMES_LIB[id]).filter(Boolean),
     mathOps:   k === 'kg1' ? ['+'] : ['+','-'],
     mathRange: k === 'kg1' ? 10 : 20
   };
@@ -1203,23 +1455,182 @@ BUILDERS.goodhabits = (root) => {
   root.appendChild(grid);
 };
 
-// RHYMES (scoped)
+// RHYMES — class-wise karaoke player
+// Tap a thumbnail → fullscreen karaoke screen with line-by-line highlight.
+// Plays MP3 from `sounds/<name>.mp3` if available, otherwise falls back to TTS.
 BUILDERS.rhymes = (root) => {
   root.innerHTML = '';
-  root.appendChild(header('Nursery Rhymes','बाल कविताएँ','Tap Play to listen','सुनें'));
-  scope().rhymes.forEach(([t_en, txt_en, t_hi, txt_hi]) => {
-    const t = T(t_en, t_hi), txt = T(txt_en, txt_hi);
-    const card = el('div', { class: 'rhyme-card' });
-    card.appendChild(el('h3', {}, '🎵 ' + t));
-    card.appendChild(el('pre', {}, txt));
-    const play = el('button', { class: 'btn green' }, '▶ ' + T('Play','सुनें'));
-    const stop = el('button', { class: 'btn' }, '⏸ ' + T('Stop','रोकें'));
-    play.onclick = () => speak(txt);
-    stop.onclick = () => speechSynthesis.cancel();
-    card.appendChild(el('div', { class: 'btn-row' }, [play, stop]));
-    root.appendChild(card);
+  root.appendChild(header('Nursery Rhymes', 'बाल कविताएँ', 'Pick a rhyme to sing', 'गाने के लिए चुनें'));
+
+  const grid = el('div', { class: 'rhyme-thumb-grid' });
+  scope().rhymes.forEach((r) => {
+    const card = el('div', { class: 'rhyme-thumb' });
+    card.appendChild(el('div', { class: 'rhyme-thumb-emoji' }, r.emoji || '🎵'));
+    card.appendChild(el('div', { class: 'rhyme-thumb-title' }, T(r.title_en, r.title_hi)));
+    card.appendChild(el('div', { class: 'rhyme-thumb-play' }, '▶'));
+    card.onclick = () => openKaraoke(root, r);
+    grid.appendChild(card);
   });
+  root.appendChild(grid);
 };
+
+// Karaoke fullscreen view (rendered inside the rhymes screen, swaps with grid)
+function openKaraoke(root, r) {
+  speechSynthesis.cancel();
+  const titleText = T(r.title_en, r.title_hi);
+  const lyricsText = T(r.text_en, r.text_hi);
+  const lines = lyricsText.split('\n').map(s => s.trim()).filter(Boolean);
+
+  root.innerHTML = '';
+
+  const back = el('button', { class: 'btn', style: 'margin:6px 0' }, '← ' + T('Back to rhymes', 'कविताओं की सूची'));
+  back.onclick = () => { stopAll(); BUILDERS.rhymes(root); };
+  root.appendChild(back);
+
+  const hero = el('div', { class: 'karaoke-hero' });
+  hero.appendChild(el('div', { class: 'karaoke-hero-emoji' }, r.emoji || '🎵'));
+  hero.appendChild(el('div', { class: 'karaoke-hero-title' }, titleText));
+  root.appendChild(hero);
+
+  const lyricsBox = el('div', { class: 'karaoke-lyrics' });
+  const lineEls = lines.map((line, i) => {
+    const lEl = el('div', { class: 'karaoke-line' }, line);
+    lyricsBox.appendChild(lEl);
+    return lEl;
+  });
+  root.appendChild(lyricsBox);
+
+  const status = el('div', { class: 'karaoke-status' }, T('Ready to play', 'सुनने के लिए तैयार'));
+  root.appendChild(status);
+
+  // Controls
+  const playBtn   = el('button', { class: 'btn green' }, '▶ ' + T('Play', 'गाओ'));
+  const pauseBtn  = el('button', { class: 'btn' }, '⏸ ' + T('Pause', 'रोको'));
+  const restartBtn= el('button', { class: 'btn orange' }, '⟲ ' + T('Restart', 'फिर से'));
+  const nextBtn   = el('button', { class: 'btn' }, T('Next ▶', 'अगला ▶'));
+  const ctrls = el('div', { class: 'karaoke-controls' }, [playBtn, pauseBtn, restartBtn, nextBtn]);
+  root.appendChild(ctrls);
+
+  // Player state
+  let audio = null;
+  let usingTTS = false;
+  let ttsIdx = 0;
+  let ttsTimer = null;
+
+  function highlight(idx) {
+    lineEls.forEach((e, i) => e.classList.toggle('active', i === idx));
+    if (idx >= 0 && lineEls[idx]) {
+      lineEls[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function stopAll() {
+    if (audio) { try { audio.pause(); } catch(_){} audio = null; }
+    speechSynthesis.cancel();
+    if (ttsTimer) { clearTimeout(ttsTimer); ttsTimer = null; }
+    highlight(-1);
+  }
+
+  function tryAudio() {
+    return new Promise((resolve) => {
+      const a = new Audio(r.audio);
+      a.preload = 'auto';
+      let settled = false;
+      const ok = () => { if (settled) return; settled = true; resolve(a); };
+      const fail = () => { if (settled) return; settled = true; resolve(null); };
+      a.addEventListener('canplaythrough', ok, { once: true });
+      a.addEventListener('error', fail, { once: true });
+      // give it 4 seconds to load on first try; treat as missing otherwise
+      setTimeout(fail, 4000);
+    });
+  }
+
+  function startMP3(a) {
+    audio = a;
+    usingTTS = false;
+    status.textContent = T('🎵 Singing along…', '🎵 गाते हुए…');
+
+    // Distribute lines evenly across audio duration; highlight current line.
+    const total = isFinite(a.duration) && a.duration > 0 ? a.duration : (lines.length * 3);
+    const per = total / lines.length;
+
+    a.ontimeupdate = () => {
+      const idx = Math.min(lines.length - 1, Math.floor(a.currentTime / per));
+      highlight(idx);
+    };
+    a.onended = () => { highlight(-1); status.textContent = T('Great singing! ⭐', 'बहुत बढ़िया! ⭐'); addStar(2); };
+    a.play().catch(() => startTTS());
+  }
+
+  function startTTS() {
+    usingTTS = true;
+    audio = null;
+    status.textContent = T('🎤 Reading aloud…', '🎤 पढ़ कर सुनाते हैं…');
+    ttsIdx = 0;
+    speakLine();
+  }
+
+  function speakLine() {
+    if (ttsIdx >= lines.length) {
+      highlight(-1);
+      status.textContent = T('Great singing! ⭐', 'बहुत बढ़िया! ⭐');
+      addStar(2);
+      return;
+    }
+    highlight(ttsIdx);
+    const u = new SpeechSynthesisUtterance(lines[ttsIdx]);
+    u.rate = 0.85;
+    u.pitch = 1.15;
+    const vlang = (STATE && STATE.lang === 'hi') ? 'hi-IN' : 'en-US';
+    u.lang = vlang;
+    // Pick a matching voice if available
+    try {
+      const voices = speechSynthesis.getVoices();
+      const v = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(vlang.toLowerCase().slice(0,2)));
+      if (v) u.voice = v;
+    } catch(_) {}
+    u.onend = () => {
+      ttsIdx++;
+      ttsTimer = setTimeout(speakLine, 220); // tiny pause between lines
+    };
+    u.onerror = () => { ttsIdx++; ttsTimer = setTimeout(speakLine, 220); };
+    speechSynthesis.speak(u);
+  }
+
+  async function play() {
+    stopAll();
+    status.textContent = T('Loading…', 'लोड हो रहा है…');
+    const a = r.audio ? await tryAudio() : null;
+    if (a) startMP3(a); else startTTS();
+  }
+
+  function pause() {
+    if (audio) { audio.pause(); status.textContent = T('Paused', 'रुका हुआ'); }
+    else if (usingTTS) { speechSynthesis.pause(); status.textContent = T('Paused', 'रुका हुआ'); }
+  }
+
+  function resume() {
+    if (audio) { audio.play(); status.textContent = T('🎵 Singing along…', '🎵 गाते हुए…'); }
+    else if (usingTTS && speechSynthesis.paused) { speechSynthesis.resume(); status.textContent = T('🎤 Reading aloud…', '🎤 पढ़ कर सुनाते हैं…'); }
+    else play();
+  }
+
+  function nextRhyme() {
+    stopAll();
+    const list = scope().rhymes;
+    const idx = list.indexOf(r);
+    const nxt = list[(idx + 1) % list.length];
+    openKaraoke(root, nxt);
+  }
+
+  playBtn.onclick   = resume;
+  pauseBtn.onclick  = pause;
+  restartBtn.onclick= play;
+  nextBtn.onclick   = nextRhyme;
+
+  // Auto-start on open
+  setTimeout(play, 100);
+}
 
 BUILDERS.stories = (root) => {
   root.innerHTML = '';

@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 15:30",
-  "notes": "FIX: Guard speechSynthesis.getVoices() against missing API in older Android WebView. This was breaking all init."
+  "lastUpdated": "2026-05-01 15:45",
+  "notes": "CLEAN: Diagnostic removed, karaoke rhymes restored with TTS guards (15 class-wise rhymes, lyrics highlight, MP3-ready)"
 }

@@ -1,13 +1,17 @@
 {
-  "version": 11,
+  "version": 12,
   "files": [
     "index.html",
     "app.js",
     "style.css",
     "manifest.json",
     "icon.svg",
-    "service-worker.js"
+    "service-worker.js",
+    "icon-192.png",
+    "icon-512.png",
+    "icon-192-maskable.png",
+    "icon-512-maskable.png"
   ],
-  "lastUpdated": "2026-05-01 16:00",
-  "notes": "Topbar CSS compact for narrow phones (no wrap). Voice routes through native FlutterBridge when available (needs APK v2.3+ for sound)."
+  "lastUpdated": "2026-05-01 16:30",
+  "notes": "Rebrand: LittleScholars + new owl icon (graduation cap). Topbar updated."
 }

@@ -112,7 +112,7 @@ body.theme-space .math-display { background: #1f2740; color: #80d8ff; }
     overflow: hidden;
   }
   #topbar h1::before {
-    content: '🌟';
+    content: '🦉';
     font-size: 22px;
     display: block;
     line-height: 1;

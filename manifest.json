@@ -1,8 +1,8 @@
 {
   "id": "/?source=pwa",
-  "name": "Kids Learning - Nursery to KG2",
-  "short_name": "Kids Learn",
-  "description": "Multi-language (English, Hindi, Marathi, Tamil, Bengali, Gujarati, Punjabi) learning app for Nursery, KG1, KG2 children. Alphabets, Numbers, Colors, Shapes, Animals, Rhymes, Stories, Games, Voice Practice & much more.",
+  "name": "LittleScholars - Nursery to KG2",
+  "short_name": "LittleScholars",
+  "description": "LittleScholars is a multi-language learning app (English, Hindi, Marathi, Tamil, Bengali, Gujarati, Punjabi) for Nursery, KG1, KG2 children — alphabets, numbers, colors, shapes, animals, rhymes, stories, games, voice practice & much more.",
   "start_url": "./index.html?source=pwa",
   "scope": "./",
   "display": "standalone",

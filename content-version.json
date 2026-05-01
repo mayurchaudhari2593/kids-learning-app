@@ -1,5 +1,5 @@
 {
-  "version": 12,
+  "version": 13,
   "files": [
     "index.html",
     "app.js",
@@ -12,6 +12,6 @@
     "icon-192-maskable.png",
     "icon-512-maskable.png"
   ],
-  "lastUpdated": "2026-05-01 16:30",
-  "notes": "Rebrand: LittleScholars + new owl icon (graduation cap). Topbar updated."
+  "lastUpdated": "2026-05-01 17:05",
+  "notes": "New professional graduate-boy icon with ABC/123 background"
 }

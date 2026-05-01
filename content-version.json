@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "files": [
+    "index.html",
+    "app.js",
+    "style.css",
+    "manifest.json",
+    "icon.svg",
+    "service-worker.js"
+  ],
+  "lastUpdated": "2026-05-01",
+  "notes": "Initial OTA-ready release"
+}

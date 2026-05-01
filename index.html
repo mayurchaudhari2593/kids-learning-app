@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#ff6b9d" />
+<meta name="description" content="Multi-language kids learning app for Nursery, KG1, KG2 — alphabets, numbers, games, stories." />
+
+<!-- Android / Chrome -->
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="application-name" content="Kids Learning" />
+
+<!-- iOS / Safari -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Kids Learn" />
+
+<!-- Microsoft tile -->
+<meta name="msapplication-TileColor" content="#ff6b9d" />
+<meta name="msapplication-tap-highlight" content="no" />
+
+<title>Kids Learning - Nursery / KG1 / KG2</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml" />
+<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png" />
+<link rel="icon" href="icon-512.png" sizes="512x512" type="image/png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+<link rel="stylesheet" href="style.css" />
+<script>
+  // Only load manifest + service worker when served over http(s) — avoids file:// CORS errors.
+  if (location.protocol === 'http:' || location.protocol === 'https:') {
+    var m = document.createElement('link');
+    m.rel = 'manifest'; m.href = 'manifest.json';
+    document.head.appendChild(m);
+  }
+</script>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header id="topbar">
+  <button id="backBtn" class="iconbtn" title="Back">⬅️</button>
+  <h1 id="title">🌟 Kids Learning 🌟</h1>
+  <div class="topright">
+    <span id="classBadge" class="class-badge"></span>
+    <span id="stars">⭐ 0</span>
+    <button id="profileBtn" class="iconbtn" title="Profile">👤</button>
+    <button id="themeBtn" class="iconbtn" title="Theme">🎨</button>
+    <button id="parentBtn" class="iconbtn" title="Parent Zone">🔐</button>
+    <button id="darkBtn" class="iconbtn" title="Dark mode">🌙</button>
+    <button id="langBtn" class="iconbtn" title="Language">EN</button>
+    <button id="muteBtn" class="iconbtn" title="Mute">🔊</button>
+    <button id="musicBtn" class="iconbtn" title="Music">🎵</button>
+  </div>
+</header>
+
+<!-- CLASS SELECT SCREEN -->
+<main id="classSelect" class="screen active">
+  <div class="welcome">
+    <div class="welcome-emoji">🎒📚🌈</div>
+    <h2 data-en="Choose Your Class" data-hi="अपनी कक्षा चुनें">Choose Your Class</h2>
+    <p data-en="Pick the right level for your child" data-hi="अपने बच्चे के लिए सही कक्षा चुनें">Pick the right level for your child</p>
+  </div>
+
+  <div class="class-grid">
+    <div class="class-card nursery" data-class="nursery">
+      <div class="class-emoji">🧸</div>
+      <h3 data-en="NURSERY" data-hi="नर्सरी">NURSERY</h3>
+      <p data-en="Age 3-4 years" data-hi="उम्र ३-४ साल">Age 3-4 years</p>
+      <small data-en="Basic ABC, 1-10, Colors, Shapes, Animals" data-hi="बेसिक A-Z, १-१०, रंग, आकार, जानवर">Basic ABC, 1-10, Colors, Shapes, Animals</small>
+    </div>
+    <div class="class-card kg1" data-class="kg1">
+      <div class="class-emoji">🎨</div>
+      <h3 data-en="KG 1" data-hi="के.जी. १">KG 1</h3>
+      <p data-en="Age 4-5 years" data-hi="उम्र ४-५ साल">Age 4-5 years</p>
+      <small data-en="A-Z words, 1-50, Hindi स्वर, Addition, Tracing" data-hi="A-Z शब्द, १-५०, हिंदी स्वर, जोड़, लिखना">A-Z words, 1-50, Hindi स्वर, Addition, Tracing</small>
+    </div>
+    <div class="class-card kg2" data-class="kg2">
+      <div class="class-emoji">🎓</div>
+      <h3 data-en="KG 2" data-hi="के.जी. २">KG 2</h3>
+      <p data-en="Age 5-6 years" data-hi="उम्र ५-६ साल">Age 5-6 years</p>
+      <small data-en="Phonics, 1-100, Hindi अ-ज्ञ, +/-, Tables, Stories, Quiz" data-hi="फोनिक्स, १-१००, हिंदी अ-ज्ञ, +/-, पहाड़े, कहानी, क्विज़">Phonics, 1-100, Hindi अ-ज्ञ, +/-, Tables, Stories, Quiz</small>
+    </div>
+  </div>
+</main>
+
+<!-- CLASS HOME (chapter list for the selected class) -->
+<main id="classHome" class="screen"></main>
+
+<!-- CHAPTER HOME (subjects inside a chapter) -->
+<main id="chapterHome" class="screen"></main>
+
+<!-- TODAY'S LESSON (5 picks for the day) -->
+<main id="todayLesson" class="screen"></main>
+
+<!-- DYNAMIC SCREENS -->
+<main id="alphabet"     class="screen"></main>
+<main id="alphabetBasic" class="screen"></main>
+<main id="phonics"      class="screen"></main>
+<main id="hindiSwar"    class="screen"></main>
+<main id="hindi"        class="screen"></main>
+<main id="numbers"      class="screen"></main>
+<main id="math"         class="screen"></main>
+<main id="tables"       class="screen"></main>
+<main id="colors"       class="screen"></main>
+<main id="shapes"       class="screen"></main>
+<main id="animals"      class="screen"></main>
+<main id="birds"        class="screen"></main>
+<main id="fruits"       class="screen"></main>
+<main id="vegetables"   class="screen"></main>
+<main id="body"         class="screen"></main>
+<main id="family"       class="screen"></main>
+<main id="days"         class="screen"></main>
+<main id="months"       class="screen"></main>
+<main id="seasons"      class="screen"></main>
+<main id="vehicles"     class="screen"></main>
+<main id="opposites"    class="screen"></main>
+<main id="goodhabits"   class="screen"></main>
+<main id="rhymes"       class="screen"></main>
+<main id="stories"      class="screen"></main>
+<main id="games"        class="screen"></main>
+<main id="quiz"         class="screen"></main>
+<main id="tracing"      class="screen"></main>
+<main id="numTracing"   class="screen"></main>
+<main id="spelling"     class="screen"></main>
+<main id="rewards"      class="screen"></main>
+
+<!-- Academic add-ons -->
+<main id="capSmall"          class="screen"></main>
+<main id="hindiNumbers"      class="screen"></main>
+<main id="numberNames"       class="screen"></main>
+<main id="comparison"        class="screen"></main>
+<main id="prepositions"      class="screen"></main>
+<main id="timeWords"         class="screen"></main>
+<main id="threeLetter"       class="screen"></main>
+<main id="sightWords"        class="screen"></main>
+<main id="vowelCons"         class="screen"></main>
+<main id="skipCounting"      class="screen"></main>
+<main id="greaterLess"       class="screen"></main>
+<main id="measurement"       class="screen"></main>
+<main id="tellTime"          class="screen"></main>
+<main id="money"             class="screen"></main>
+<main id="sentence"          class="screen"></main>
+<main id="comprehension"     class="screen"></main>
+<main id="wordProblems"      class="screen"></main>
+<main id="hindiWords"        class="screen"></main>
+<main id="gk"                class="screen"></main>
+
+<!-- Games -->
+<main id="memMatch"          class="screen"></main>
+<main id="dragSort"          class="screen"></main>
+<main id="soundQuiz"         class="screen"></main>
+<main id="coloring"          class="screen"></main>
+<main id="timedChallenge"    class="screen"></main>
+<main id="traffic"           class="screen"></main>
+<main id="dice"              class="screen"></main>
+
+<!-- Audio -->
+<main id="animalSounds"      class="screen"></main>
+<main id="vehicleSounds"     class="screen"></main>
+<main id="natureSounds"      class="screen"></main>
+
+<!-- Cultural -->
+<main id="festivals"         class="screen"></main>
+<main id="mantras"           class="screen"></main>
+<main id="nationalSymbols"   class="screen"></main>
+<main id="famousPlaces"      class="screen"></main>
+<main id="famousPeople"      class="screen"></main>
+
+<!-- General Knowledge -->
+<main id="solarSystem"       class="screen"></main>
+<main id="weather"           class="screen"></main>
+<main id="helpers"           class="screen"></main>
+<main id="homeThings"        class="screen"></main>
+<main id="schoolThings"      class="screen"></main>
+<main id="instruments"       class="screen"></main>
+<main id="sports"            class="screen"></main>
+<main id="indianFoods"       class="screen"></main>
+<main id="clothes"           class="screen"></main>
+
+<!-- Brain & Logic -->
+<main id="pattern"           class="screen"></main>
+<main id="sequence"          class="screen"></main>
+<main id="sortGame"          class="screen"></main>
+<main id="oddOne"            class="screen"></main>
+<main id="countObj"          class="screen"></main>
+<main id="spotDiff"          class="screen"></main>
+<main id="whatNext"          class="screen"></main>
+
+<!-- App Features -->
+<main id="profiles"          class="screen"></main>
+<main id="settings"          class="screen"></main>
+<main id="parentZone"        class="screen"></main>
+<main id="parentDashboard"   class="screen"></main>
+<main id="themesScreen"      class="screen"></main>
+<main id="dailyChallenge"    class="screen"></main>
+<main id="wordBuilder"       class="screen"></main>
+<main id="avatarBuilder"     class="screen"></main>
+
+<!-- Round 2: Voice features -->
+<main id="voicePractice"     class="screen"></main>
+<main id="voiceQuiz"         class="screen"></main>
+
+<!-- Round 2: Adaptive learning -->
+<main id="adaptiveStudy"     class="screen"></main>
+
+<!-- Round 2: New games -->
+<main id="memoryPalace"      class="screen"></main>
+<main id="mazeGame"          class="screen"></main>
+<main id="jigsawPuzzle"      class="screen"></main>
+<main id="hiddenObject"      class="screen"></main>
+
+<!-- Round 2: New content -->
+<main id="cursive"           class="screen"></main>
+<main id="science"           class="screen"></main>
+<main id="yoga"              class="screen"></main>
+<main id="computerBasics"    class="screen"></main>
+
+<!-- Round 2: Parent-driven -->
+<main id="customLesson"      class="screen"></main>
+<main id="homework"          class="screen"></main>
+<main id="weeklySchedule"    class="screen"></main>
+
+<!-- Round 2: Engagement -->
+<main id="petInteractive"    class="screen"></main>
+<main id="gardenInteractive" class="screen"></main>
+<main id="surpriseBox"       class="screen"></main>
+<main id="leaderboard"       class="screen"></main>
+<main id="miniEvent"         class="screen"></main>
+
+<!-- Round 2: AI-lite -->
+<main id="aiTutor"           class="screen"></main>
+<main id="storyGenerator"    class="screen"></main>
+<main id="lessonSuggester"   class="screen"></main>
+
+<!-- Floating mascot -->
+<div id="mascot" class="mascot hidden">
+  <div class="mascot-bubble" id="mascotBubble"></div>
+  <div class="mascot-char" id="mascotChar">🦉</div>
+</div>
+
+<!-- Confetti canvas -->
+<canvas id="confetti"></canvas>
+
+<!-- Particle trails canvas (finger sparkles) -->
+<canvas id="particleTrail"></canvas>
+
+<!-- Install prompt banner -->
+<div id="installBanner" class="install-banner">
+  <span>📲</span>
+  <div style="flex:1">
+    <div style="font-weight:bold">Install Kids Learning App</div>
+    <div style="font-size:12px;opacity:.85">Add to home screen for offline use</div>
+  </div>
+  <button id="installAccept" class="btn green" style="padding:8px 14px;font-size:13px">Install</button>
+  <button id="installDismiss" class="btn" style="padding:8px 12px;font-size:13px;background:#fff;color:#666">×</button>
+</div>
+
+<!-- Offline indicator -->
+<div id="offlineBar" class="offline-bar">📴 Offline — App still works</div>
+
+<!-- Daily login bonus modal -->
+<div id="loginBonus" class="achieve-pop">
+  <div class="achieve-card" style="background:linear-gradient(135deg,#fff,#e1f5fe);border-color:#29b6f6">
+    <div class="achieve-icon" id="bonusIcon">🎁</div>
+    <div class="achieve-title" id="bonusTitle">Daily Bonus!</div>
+    <div class="achieve-sub" id="bonusSub">Welcome back!</div>
+    <div id="bonusStreak" style="margin:14px 0;display:flex;justify-content:center;gap:6px;flex-wrap:wrap"></div>
+    <button id="bonusClose" class="btn green">Claim ⭐</button>
+  </div>
+</div>
+
+<!-- Birthday celebration modal -->
+<div id="birthdayPop" class="achieve-pop">
+  <div class="achieve-card" style="background:linear-gradient(135deg,#fff59d,#ffcc80);border-color:#ffa726">
+    <div class="achieve-icon">🎂</div>
+    <div class="achieve-title">Happy Birthday! 🎉</div>
+    <div class="achieve-sub" id="bdaySub">Have a wonderful day!</div>
+    <button id="bdayClose" class="btn orange">Yay! 🎈</button>
+  </div>
+</div>
+
+<!-- Surprise box modal -->
+<div id="surprisePop" class="achieve-pop">
+  <div class="achieve-card" style="background:linear-gradient(135deg,#fff,#f3e5f5);border-color:#ab47bc">
+    <div class="achieve-icon" id="surpriseIcon">🎁</div>
+    <div class="achieve-title" id="surpriseTitle">Surprise!</div>
+    <div class="achieve-sub" id="surpriseSub">You unlocked something!</div>
+    <button id="surpriseClose" class="btn">Open</button>
+  </div>
+</div>
+
+<!-- Kid Mode Lock overlay -->
+<div id="kidLock" class="kid-lock">
+  <div class="kid-lock-card">
+    <div style="font-size:80px">🔒</div>
+    <h2>Kid Mode Active</h2>
+    <p>Parent PIN required to exit</p>
+    <input id="kidLockPin" type="password" maxlength="4" placeholder="PIN" />
+    <button id="kidLockUnlock" class="btn">Unlock</button>
+  </div>
+</div>
+
+<!-- Achievement popup -->
+<div id="achievePop" class="achieve-pop">
+  <div class="achieve-card">
+    <div class="achieve-icon" id="achieveIcon">🏆</div>
+    <div class="achieve-title" id="achieveTitle">New Badge!</div>
+    <div class="achieve-sub" id="achieveSub">You earned it</div>
+    <button id="achieveShare" class="btn green">📤 Share</button>
+    <button id="achieveClose" class="btn">OK</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

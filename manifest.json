@@ -1,0 +1,47 @@
+{
+  "id": "/?source=pwa",
+  "name": "Kids Learning - Nursery to KG2",
+  "short_name": "Kids Learn",
+  "description": "Multi-language (English, Hindi, Marathi, Tamil, Bengali, Gujarati, Punjabi) learning app for Nursery, KG1, KG2 children. Alphabets, Numbers, Colors, Shapes, Animals, Rhymes, Stories, Games, Voice Practice & much more.",
+  "start_url": "./index.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#fceabb",
+  "theme_color": "#ff6b9d",
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "icon.svg",      "sizes": "any",     "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-192.png",  "sizes": "192x192", "type": "image/png",     "purpose": "any" },
+    { "src": "icon-512.png",  "sizes": "512x512", "type": "image/png",     "purpose": "any" },
+    { "src": "icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "categories": ["education", "kids", "books"],
+  "shortcuts": [
+    {
+      "name": "Today's Lesson",
+      "short_name": "Today",
+      "description": "Today's 5 fun activities",
+      "url": "./index.html?screen=todayLesson",
+      "icons": [{ "src": "icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Daily Challenge",
+      "short_name": "Challenge",
+      "description": "Quick 5 questions",
+      "url": "./index.html?screen=dailyChallenge",
+      "icons": [{ "src": "icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Story Maker",
+      "short_name": "Story",
+      "description": "Generate fun stories",
+      "url": "./index.html?screen=storyGenerator",
+      "icons": [{ "src": "icon.svg", "sizes": "any" }]
+    }
+  ]
+}

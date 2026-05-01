@@ -38,6 +38,77 @@
 </head>
 <body>
 
+<!-- ============================================================
+     INLINE DIAGNOSTIC OVERLAY (debug — runs BEFORE app.js loads)
+     Sits on top, captures taps + JS errors + status. Shows on phone
+     so we can see exactly what is or isn't working.
+     ============================================================ -->
+<div id="dbg" style="position:fixed;top:0;left:0;right:0;background:#1565c0;color:#fff;padding:8px;font:11px monospace;z-index:2147483647;max-height:40vh;overflow:auto;border-bottom:2px solid #0d47a1">
+  <div id="dbgInfo">DBG starting…</div>
+  <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
+    <button id="dbgTap" style="flex:1;min-width:80px;background:#43a047;color:#fff;border:0;padding:8px;border-radius:6px;font:bold 12px sans-serif">TAP TEST</button>
+    <button id="dbgGo" style="flex:1;min-width:80px;background:#fb8c00;color:#fff;border:0;padding:8px;border-radius:6px;font:bold 12px sans-serif">JS go() TEST</button>
+    <button id="dbgHide" style="background:#d32f2f;color:#fff;border:0;padding:8px;border-radius:6px;font:bold 12px sans-serif">×</button>
+  </div>
+</div>
+<script>
+(function(){
+  var dbg = document.getElementById('dbg');
+  var info = document.getElementById('dbgInfo');
+  var tapCount = 0, errCount = 0, errLog = [];
+  var bootStart = Date.now();
+
+  function update(){
+    var s = '';
+    s += 'time: '+ ((Date.now()-bootStart)/1000).toFixed(1) +'s\n';
+    s += 'taps: '+ tapCount +'  errors: '+ errCount +'\n';
+    s += 'app.js loaded: '+ (window.__APPJS_LOADED ? 'YES' : 'no') +'\n';
+    s += 'STATE.klass: '+ (window.STATE ? (window.STATE.klass||'(none)') : 'no STATE') +'\n';
+    s += 'BUILDERS: '+ (window.BUILDERS ? Object.keys(window.BUILDERS).length : 0) +' keys\n';
+    s += 'cards in DOM: '+ document.querySelectorAll('.class-card').length +'\n';
+    if (errLog.length) s += '\nERRORS:\n' + errLog.slice(-3).join('\n');
+    info.textContent = s;
+  }
+  setInterval(update, 500);
+  update();
+
+  // Tap counter — counts every touch on the WebView
+  document.addEventListener('click', function(){ tapCount++; update(); }, true);
+  document.addEventListener('touchstart', function(){ tapCount++; update(); }, true);
+
+  // Error capturing
+  window.addEventListener('error', function(e){
+    errCount++;
+    errLog.push((e.message||'?') +' @'+ (e.filename||'?').split('/').pop() +':'+ (e.lineno||'?'));
+    update();
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    errCount++;
+    errLog.push('REJ: ' + (e.reason && (e.reason.message||e.reason)));
+    update();
+  });
+
+  // Tap test — works no matter what JS framework state is
+  document.getElementById('dbgTap').onclick = function(){
+    info.style.background = '#4caf50';
+    setTimeout(function(){ info.style.background=''; }, 200);
+    alert('Tap works! tapCount=' + tapCount);
+  };
+
+  // Try app's go() function manually
+  document.getElementById('dbgGo').onclick = function(){
+    if (typeof window.go === 'function') {
+      try { window.go('classHome'); alert('go(classHome) called OK'); }
+      catch(err){ alert('go() threw: ' + err.message); }
+    } else {
+      alert('window.go is not a function. typeof = ' + typeof window.go);
+    }
+  };
+
+  document.getElementById('dbgHide').onclick = function(){ dbg.style.display='none'; };
+})();
+</script>
+
 <!-- TOP BAR -->
 <header id="topbar">
   <button id="backBtn" class="iconbtn" title="Back">⬅️</button>

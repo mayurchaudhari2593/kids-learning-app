@@ -1,5 +1,5 @@
 {
-  "version": 5,
+  "version": 6,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 14:45",
-  "notes": "PRISTINE diagnostic — error catcher removed, all karaoke code disabled. Bisecting click-not-working issue."
+  "lastUpdated": "2026-05-01 14:55",
+  "notes": "INLINE DIAGNOSTIC overlay added — taps counter, error log, JS state visible at top"
 }

@@ -1,5 +1,7 @@
 /* ============== KIDS LEARNING APP - LOGIC ============== */
 /* Classes: nursery (3-4) | kg1 (4-5) | kg2 (5-6)         */
+window.__APPJS_LOADED = true;
+window.__APPJS_TIME = Date.now();
 
 // ---------- STATE ----------
 const STATE = {
@@ -6709,3 +6711,9 @@ try {
     go(STATE.current);
   }
 } catch(e) {}
+
+// Expose key globals so the diagnostic overlay (in index.html) can read them.
+window.STATE = STATE;
+window.BUILDERS = BUILDERS;
+window.go = go;
+window.__APPJS_FULLY_LOADED = true;

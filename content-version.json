@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 5,
   "files": [
     "index.html",
     "app.js",
@@ -8,6 +8,6 @@
     "icon.svg",
     "service-worker.js"
   ],
-  "lastUpdated": "2026-05-01 14:30",
-  "notes": "Revert karaoke BUILDERS to debug click-not-working issue (RHYMES_LIB kept as dead data)"
+  "lastUpdated": "2026-05-01 14:45",
+  "notes": "PRISTINE diagnostic — error catcher removed, all karaoke code disabled. Bisecting click-not-working issue."
 }

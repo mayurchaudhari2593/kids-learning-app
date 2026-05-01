@@ -1,0 +1,13 @@
+{
+  "version": "2.5.0",
+  "downloadUrl": "https://mayurchaudhari2593.github.io/kids-learning-app/littlescholars.apk",
+  "notes": "LittleScholars latest build — content auto-updates over the air, no reinstall needed for content changes.",
+  "mandatory": false,
+  "minSupported": "2.0.0",
+  "history": [
+    { "version": "2.5.0", "date": "2026-05-01", "notes": "Professional graduate-boy icon, polished UI" },
+    { "version": "2.4.0", "date": "2026-05-01", "notes": "LittleScholars rebrand" },
+    { "version": "2.3.0", "date": "2026-05-01", "notes": "Content OTA stabilized" },
+    { "version": "2.0.0", "date": "2026-05-01", "notes": "Hybrid PWA + WebView shell launch" }
+  ]
+}
